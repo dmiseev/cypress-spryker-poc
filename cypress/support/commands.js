@@ -20,9 +20,31 @@ Cypress.Commands.add('visitBackoffice', (url) => {
   return cy.visit(Cypress.env().backofficeUrl + url);
 });
 
-Cypress.Commands.add('resetCookies', () => {
+Cypress.Commands.add('visitMerchantPortal', (url) => {
+  return cy.visit(Cypress.env().merchantPortalUrl + url);
+});
+
+Cypress.Commands.add('resetYvesCookies', () => {
   cy.clearCookies();
   cy.visit('/', {
+    onBeforeLoad(win) {
+      win.sessionStorage.clear();
+    },
+  });
+});
+
+Cypress.Commands.add('resetBackofficeCookies', () => {
+  cy.clearCookies();
+  cy.visitBackoffice('/security-gui/login', {
+    onBeforeLoad(win) {
+      win.sessionStorage.clear();
+    },
+  });
+});
+
+Cypress.Commands.add('resetMerchantPortalCookies', () => {
+  cy.clearCookies();
+  cy.visitMerchantPortal('/security-merchant-portal-gui/login', {
     onBeforeLoad(win) {
       win.sessionStorage.clear();
     },
